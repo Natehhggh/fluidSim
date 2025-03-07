@@ -3,12 +3,19 @@
 
 #include "immintrin.h"
 //#TODO: how to define this in main
-#define N 300
+#define N 200
 #define SIZE (N + 2) * (N + 2)
 #define IX(i,j) ((j) + (N+2)*(i))
 #define SWAP(x0,x) {float *tmp = x0; x0=x;x=tmp;}
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 #define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
+
+void add_source(int n, float* x, float* s, float dt){
+    int size = (n+2) * (n+2);
+    for(int i = 0; i < size; i++){
+        x[i] += dt * s[i];  
+    }
+}
 
 void set_bnd(int n, int b, float* x){
     for(int i = 1; i < n; i++){

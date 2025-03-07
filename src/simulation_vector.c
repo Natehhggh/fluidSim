@@ -2,7 +2,7 @@
 #define SIM_VECTOR_C 
 
 #include "immintrin.h"
-
+//TODO: these need to be global between files at least refactor N and size to be passed directly
 #define N 200
 #define SIZE (N + 2) * (N + 2)
 #define IX(i,j) ((j) + (N+2)*(i))
@@ -38,7 +38,7 @@ void set_bnd(int n, int b, float* x){
 
 
 //Seems it's no better than 256, sounds like the instructions are still encoded as 2 avx2 calls
-void diffuse_vector_512(int n, int b, float* x, float* x0, float diff, float dt){
+void diffuse_512(int n, int b, float* x, float* x0, float diff, float dt){
     float a = dt * diff * n * n;
     float a_div = 1/(1+4 * a);
     float tmp[SIZE];
@@ -73,7 +73,7 @@ void diffuse_vector_512(int n, int b, float* x, float* x0, float diff, float dt)
 
 //can I avx the i at all, or better memoize
 //#pragma optimize("", off)
-void diffuse_vector(int n, int b, float* x, float* x0, float diff, float dt){
+void diffuse(int n, int b, float* x, float* x0, float diff, float dt){
     float a = dt * diff * n * n;
     float a_div = 1/(1+4 * a);
     float tmp[SIZE];
@@ -142,7 +142,7 @@ void advect(int n, int b, float* d, float* d0, float* u, float* v, float dt){
 }
 
 
-void project_vector(int n, float* u, float* v, float* p, float* div){
+void project(int n, float* u, float* v, float* p, float* div){
     __m256 _top, _bottom, _left, _right, _resA, _resB, _quarter, _h,_halfn, _center, _center2, _zero;
     
     float h = -0.5f * 1.0/n;

@@ -65,7 +65,7 @@ renderMode rendering = DYE;
 void dens_step(int n, float* x, float* x0, float* u, float* v, float diff, float dt){
     add_source(n, x, x0, dt);
     SWAP(x0, x);
-    diffuse_vector(n, 0, x, x0, diff, dt);
+    diffuse(n, 0, x, x0, diff, dt);
     SWAP(x0, x);
     advect(n, 0, x, x0, u, v, dt);
 }
@@ -75,15 +75,15 @@ void vel_step(int n, float* u, float* v, float* u0, float* v0, float visc, float
     add_source(n,v,v0,dt);
     SWAP(u0,u);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &startClock);
-    diffuse_vector(n, 1, u, u0, visc, dt);
+    diffuse(n, 1, u, u0, visc, dt);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &endClock);
     perfTimes[0] = endClock.tv_nsec - startClock.tv_nsec;
     SWAP(v0,v);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &startClock);
-    diffuse_vector(n, 2 ,v, v0, visc, dt);
+    diffuse(n, 2 ,v, v0, visc, dt);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &endClock);
     perfTimes[2] = endClock.tv_nsec - startClock.tv_nsec;
-    project_vector(n, u, v, u0, v0);
+    project(n, u, v, u0, v0);
     SWAP(u0,u);
     SWAP(v0,v);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &startClock);
@@ -91,7 +91,7 @@ void vel_step(int n, float* u, float* v, float* u0, float* v0, float visc, float
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &endClock);
     perfTimes[1] = endClock.tv_nsec - startClock.tv_nsec;
     advect(n, 2, v, v0, u0, v0, dt);
-    project_vector(n, u, v, u0, v0);
+    project(n, u, v, u0, v0);
 }
 
 
